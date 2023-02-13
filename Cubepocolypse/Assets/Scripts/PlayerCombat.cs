@@ -10,9 +10,10 @@ public class PlayerCombat : MonoBehaviour
     public PlayerMovement playerMovement;
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (collision.tag == "Enemy") {
             if (playerMovement.isDashing) {
-                Destroy(collision.gameObject);
+                enemy.takeDamage(player.damage);
                 player.score += 10;
                 Debug.Log(player.score);
             } else {

@@ -7,4 +7,5 @@ public class Player : MonoBehaviour
     public int health = 100;
     public int level = 9;
     public int score = 0;
+    public int damage = 10;
 }

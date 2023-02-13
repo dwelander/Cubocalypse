@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D rb;
     public float moveSpeed = 10f;
     public Transform player;
+    public int health = 20;
 
     private void Awake() {
         player = GameObject.Find("Player").transform;
@@ -17,5 +18,13 @@ public class Enemy : MonoBehaviour
         float temp = Mathf.Max(Mathf.Abs(movement.x), Mathf.Abs(movement.y));
         movement /= temp;
         rb.velocity = movement * moveSpeed;
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+        Debug.Log(health);
+        if (health <= 0) {
+            Destroy(this.gameObject);
+        }
     }
 }

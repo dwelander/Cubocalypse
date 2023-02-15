@@ -1,14 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public Enemy enemyPrefab;
     public Camera cam;
     public float enemySpawnCooldown = 5f;
+    public float minEnemySpawnCooldown = 0.5f;
 
     private bool canSpawn = true;
+    private List<Enemy> enemyList = new List<Enemy>();
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Update() {
         if (canSpawn) {
@@ -22,14 +31,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GameOver() {
+        StartCoroutine(GameOverIE());
+    }
+
+    public void LifeDown() {
+        while (enemyList.Count > 0) {
+            if (enemyList[0] != null) {
+                Destroy(enemyList[0].gameObject);
+            }
+            enemyList.RemoveAt(0);
+        }
+
+        enemySpawnCooldown += 2.5f;
+    }
+
     IEnumerator SpawnEnemy(Vector2 pos) {
         canSpawn = false;
         Enemy enemy = Instantiate(enemyPrefab, pos, Quaternion.identity);
+        enemyList.Add(enemy);
         yield return new WaitForSeconds(enemySpawnCooldown);
         canSpawn = true;
-        if (enemySpawnCooldown > 1f) {
+        if (enemySpawnCooldown > minEnemySpawnCooldown) {
             enemySpawnCooldown -= 0.1f;
         }
         yield return null;
+    }
+
+    IEnumerator GameOverIE() {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

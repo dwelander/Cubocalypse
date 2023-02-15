@@ -14,11 +14,8 @@ public class PlayerCombat : MonoBehaviour
         if (collision.tag == "Enemy") {
             if (playerMovement.isDashing) {
                 enemy.takeDamage(player.damage);
-                player.score += 10;
-                Debug.Log(player.score);
             } else {
-                player.health -= 10;
-                Debug.Log(player.health);
+                player.takeDamage(enemy.damage);
             }
         }
     }

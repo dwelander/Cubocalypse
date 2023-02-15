@@ -6,15 +6,19 @@ public class Enemy : MonoBehaviour
 {
     public Rigidbody2D rb;
     public float moveSpeed = 10f;
-    public Transform player;
+    public Player player;
     public int health = 20;
+    public int damage = 10;
+
+    private SpriteRenderer spriteRenderer;
 
     private void Awake() {
-        player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Player").GetComponent<Player>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate() {
-        Vector2 movement = player.position - transform.position;
+        Vector2 movement = player.transform.position - transform.position;
         float temp = Mathf.Max(Mathf.Abs(movement.x), Mathf.Abs(movement.y));
         movement /= temp;
         rb.velocity = movement * moveSpeed;
@@ -22,9 +26,9 @@ public class Enemy : MonoBehaviour
 
     public void takeDamage(int damage) {
         health -= damage;
-        Debug.Log(health);
         if (health <= 0) {
             Destroy(this.gameObject);
+            player.Score();
         }
     }
 }

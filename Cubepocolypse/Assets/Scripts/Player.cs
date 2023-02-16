@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public int lives = 9;
     public int score = 0;
     public int damage = 10;
-    public int scoreIncrease = 10;
+    public int scoreIncrease = 2;
 
     public void takeDamage(int damage) {
         health -= damage;
@@ -30,9 +30,9 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator ScoreMultiplier() {
-        scoreIncrease = Mathf.RoundToInt(scoreIncrease * 1.25f);
+        scoreIncrease = Mathf.RoundToInt(scoreIncrease * 2f);
         yield return new WaitForSeconds(1f);
-        scoreIncrease = 10;
+        scoreIncrease = 1;
         yield return null;
     }
 }

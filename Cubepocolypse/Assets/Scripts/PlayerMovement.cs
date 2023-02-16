@@ -7,10 +7,11 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public float moveSpeed = 10f;
     public float dashSpeed = 20f;
-    public float dashDistance = 1f;
+    public float dashDistance = 0.5f;
     public Camera cam;
     public bool isDashing;
     public float dashCooldown = 2f;
+    public Explosion explosionPrefab;
 
     private Vector2 movement;
     private Vector2 mousePos;
@@ -32,6 +33,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "YWall") {
+            if (isDashing) {
+                StopCoroutine(Dash());
+                dashVector *= new Vector2(1, -1);
+                StartCoroutine(Dash());
+            }
+        } else if (collision.gameObject.tag == "XWall") {
+            if (isDashing) {
+                StopCoroutine(Dash());
+                dashVector *= new Vector2(-1, 1);
+                StartCoroutine(Dash());
+            }
+        }
+    }
+
     private void FixedUpdate() {
         if (!isDashing) {
             rb.velocity = movement * moveSpeed;
@@ -43,7 +60,10 @@ public class PlayerMovement : MonoBehaviour
         canDash = false;
         rb.velocity = dashVector * dashSpeed;
         yield return new WaitForSeconds(dashDistance / 2);
+        //Instantiate(explosionPrefab, rb.position, Quaternion.identity);
+        yield return new WaitForSeconds(dashDistance / 2);
         isDashing = false;
+        StartCoroutine(UIManager.Instance.DashUI(dashCooldown));
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
         yield return null;

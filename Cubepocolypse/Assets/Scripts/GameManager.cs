@@ -43,13 +43,15 @@ public class GameManager : MonoBehaviour
             enemyList.RemoveAt(0);
         }
 
-        enemySpawnCooldown += 2.5f;
+        enemySpawnCooldown += 1f;
+        minEnemySpawnCooldown -= 0.05f;
     }
 
     IEnumerator SpawnEnemy(Vector2 pos) {
         canSpawn = false;
         Enemy enemy = Instantiate(enemyPrefab, pos, Quaternion.identity);
         enemyList.Add(enemy);
+        enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, 1);
         yield return new WaitForSeconds(enemySpawnCooldown);
         canSpawn = true;
         if (enemySpawnCooldown > minEnemySpawnCooldown) {

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public Enemy enemyPrefab;
+    public Enemy[] enemyPrefabs;
     public Camera cam;
     public float enemySpawnCooldown = 5f;
     public float minEnemySpawnCooldown = 0.5f;
@@ -48,8 +48,19 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator SpawnEnemy(Vector2 pos) {
+        int random = Random.Range(0, 100);
+        int index;
+
+        if (random < 90) {
+            index = 0;
+        } else if (random < 99) {
+            index = 1;
+        } else {
+            index = 2;
+        }
+
         canSpawn = false;
-        Enemy enemy = Instantiate(enemyPrefab, pos, Quaternion.identity);
+        Enemy enemy = Instantiate(enemyPrefabs[index], pos, Quaternion.identity);
         enemyList.Add(enemy);
         enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y, 1);
         yield return new WaitForSeconds(enemySpawnCooldown);

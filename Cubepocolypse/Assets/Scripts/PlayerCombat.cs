@@ -13,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if (collision.tag == "Enemy") {
             if (playerMovement.isDashing) {
-                enemy.takeDamage(player.damage);
+                enemy.takeDamage(player.damage, rb.velocity);
             } else {
                 player.takeDamage(enemy.damage);
             }

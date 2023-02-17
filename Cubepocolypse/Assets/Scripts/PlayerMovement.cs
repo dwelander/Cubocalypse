@@ -11,16 +11,39 @@ public class PlayerMovement : MonoBehaviour
     public Camera cam;
     public bool isDashing;
     public float dashCooldown = 2f;
-    public Explosion explosionPrefab;
+    public Bomb bombPrefab;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
 
     private Vector2 movement;
     private Vector2 mousePos;
     private Vector2 dashVector;
     private bool canDash = true;
+    private Player player;
+    private TrailRenderer trail;
+
+    private void Awake() {
+        player = GetComponent<Player>();
+        trail = GetComponent<TrailRenderer>();
+    }
 
     void Update() {
+        transform.rotation = Quaternion.identity;
+        
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
+        if (movement.x != 0 || movement.y != 0) {
+            animator.SetBool("isMoving", true);
+        } else {
+            animator.SetBool("isMoving", false);
+        }
+
+        if (movement.x > 0) {
+            spriteRenderer.flipX = true;
+        } else {
+            spriteRenderer.flipX = false;
+        }
 
         if (Input.GetMouseButtonDown(0)) {
             if (canDash) {
@@ -57,12 +80,16 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Dash() {
         isDashing = true;
+        trail.emitting = true;
         canDash = false;
         rb.velocity = dashVector * dashSpeed;
         yield return new WaitForSeconds(dashDistance / 2);
-        //Instantiate(explosionPrefab, rb.position, Quaternion.identity);
+        if (player.lives <= 8) {
+            Instantiate(bombPrefab, rb.position, Quaternion.identity);
+        }
         yield return new WaitForSeconds(dashDistance / 2);
         isDashing = false;
+        trail.emitting = false;
         StartCoroutine(UIManager.Instance.DashUI(dashCooldown));
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;

@@ -16,10 +16,12 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool isDead;
     private Vector2 moveVector;
+    private ParticleSystem particle;
 
     private void Awake() {
         player = GameObject.Find("Player").GetComponent<Player>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        particle = GetComponent<ParticleSystem>();
     }
 
     private void FixedUpdate() {
@@ -31,10 +33,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(int damage, Vector2 moveVector) {
         health -= damage;
         if (health <= 0) {
             player.Score();
+            this.moveVector = moveVector;
             StartCoroutine(DeathAnim());
         }
     }
@@ -52,13 +55,16 @@ public class Enemy : MonoBehaviour
     IEnumerator DeathAnim() {
         isDead = true;
         col.isTrigger = false;
-        moveVector = player.GetComponent<Rigidbody2D>().velocity * knockback;
+        moveVector *= knockback;
         rb.velocity = moveVector;
         for (int i = 0; i < deathAnimTime * 100; i++) {
-            transform.eulerAngles = Vector3.forward * i * -10;
+            transform.eulerAngles = Vector3.forward * i * knockback * -2;
             rb.velocity = moveVector;
             yield return new WaitForSeconds(deathAnimTime / 100);
         }
+        spriteRenderer.enabled = false;
+        particle.Play();
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
         yield return null;
     }

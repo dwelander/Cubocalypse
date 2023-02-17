@@ -1,25 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Explosion : MonoBehaviour
+public class Freeze : MonoBehaviour
 {
     public int damage;
     public float time;
     public float size;
+    public float freezeTime;
     public ParticleSystem particle;
 
     private CircleCollider2D col;
 
     private void Awake() {
         col = GetComponent<CircleCollider2D>();
-        StartCoroutine(Explode());
+        StartCoroutine(FreezeAction());
         particle.Play();
-    }
-
-    private void Update() {
-        transform.localScale = new Vector2(col.radius, col.radius);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -30,12 +26,12 @@ public class Explosion : MonoBehaviour
         }
     }
 
-    IEnumerator Explode() {
+    IEnumerator FreezeAction() {
         for (int i = 0; i < 100; i++) {
             col.radius += size / 100;
             yield return new WaitForSeconds(time / 100);
         }
-        yield return new WaitForSeconds(0.5f - time);
+        yield return new WaitForSeconds(1f - time);
         Destroy(gameObject);
         yield return null;
     }

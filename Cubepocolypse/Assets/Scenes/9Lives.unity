@@ -892,6 +892,7 @@ MonoBehaviour:
   cam: {fileID: 519420031}
   enemySpawnCooldown: 2
   minEnemySpawnCooldown: 0.5
+  enemyList: []
 --- !u!4 &1025555629
 Transform:
   m_ObjectHideFlags: 0
@@ -1347,6 +1348,10 @@ MonoBehaviour:
   bombPrefab: {fileID: 9174678683207844720, guid: 124e8d1fe43ea7848b63a59315e87ab8, type: 3}
   spriteRenderer: {fileID: 1519350702}
   animator: {fileID: 1519350707}
+  freezePrefab: {fileID: 8437949178963434348, guid: dab8e1ee61079754f859d224a3c6b139, type: 3}
+  numMissiles: 2
+  missileTime: 0.5
+  missilePrefab: {fileID: 3064483304562266149, guid: bf10763f84ad4f049827216381cf2487, type: 3}
 --- !u!50 &1519350701
 Rigidbody2D:
   serializedVersion: 4

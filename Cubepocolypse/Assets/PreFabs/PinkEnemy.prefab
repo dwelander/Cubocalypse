@@ -107,7 +107,7 @@ MonoBehaviour:
   player: {fileID: 0}
   health: 20
   damage: 10
-  knockback: 0.5
+  knockback: 0.75
   deathAnimTime: 0.5
   col: {fileID: 7540509807407102578}
 --- !u!50 &8317624784322033234

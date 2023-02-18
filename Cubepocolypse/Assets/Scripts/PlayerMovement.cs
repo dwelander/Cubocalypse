@@ -14,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     public Bomb bombPrefab;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
+    public Freeze freezePrefab;
+    public int numMissiles;
+    public float missileTime;
+    public Missile missilePrefab;
 
     private Vector2 movement;
     private Vector2 mousePos;
@@ -87,12 +91,26 @@ public class PlayerMovement : MonoBehaviour
         if (player.lives <= 8) {
             Instantiate(bombPrefab, rb.position, Quaternion.identity);
         }
+        if (player.lives <= 7) {
+            Instantiate(freezePrefab, rb.position, Quaternion.identity);
+        }
+        if (player.lives >= 9) {
+            StartCoroutine(SpawnMissiles());
+        }
         yield return new WaitForSeconds(dashDistance / 2);
         isDashing = false;
         trail.emitting = false;
         StartCoroutine(UIManager.Instance.DashUI(dashCooldown));
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+        yield return null;
+    }
+
+    IEnumerator SpawnMissiles() {
+        for (int i = 0; i < numMissiles; i++) {
+            Instantiate(missilePrefab, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(missileTime / numMissiles);
+        }
         yield return null;
     }
 }

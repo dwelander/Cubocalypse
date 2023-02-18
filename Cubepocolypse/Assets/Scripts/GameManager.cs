@@ -11,9 +11,9 @@ public class GameManager : MonoBehaviour
     public Camera cam;
     public float enemySpawnCooldown = 5f;
     public float minEnemySpawnCooldown = 0.5f;
+    public List<Enemy> enemyList = new List<Enemy>();
 
     private bool canSpawn = true;
-    private List<Enemy> enemyList = new List<Enemy>();
 
     private void Awake() {
         Instance = this;

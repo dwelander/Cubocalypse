@@ -22,7 +22,7 @@ public class Freeze : MonoBehaviour
         if (collision.tag == "Enemy") {
             Enemy enemy = collision.GetComponent<Enemy>();
             Vector2 moveVector = enemy.transform.position - transform.position;
-            enemy.takeDamage(damage, moveVector * 10);
+            enemy.takeDamageFreeze(damage, moveVector * 5, freezeTime);
         }
     }
 

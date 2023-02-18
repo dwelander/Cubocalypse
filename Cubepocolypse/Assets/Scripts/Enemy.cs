@@ -17,19 +17,34 @@ public class Enemy : MonoBehaviour
     private bool isDead;
     private Vector2 moveVector;
     private ParticleSystem particle;
+    private bool frozen;
+    private Animator animator;
 
     private void Awake() {
         player = GameObject.Find("Player").GetComponent<Player>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         particle = GetComponent<ParticleSystem>();
+        animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate() {
-        if (!isDead) {
+        if (!isDead && !frozen) {
             Vector2 movement = player.transform.position - transform.position;
             float temp = Mathf.Max(Mathf.Abs(movement.x), Mathf.Abs(movement.y));
             movement /= temp;
             rb.velocity = movement * moveSpeed;
+        }
+
+        if (frozen && !isDead) {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
+    private void Update() {
+        if (frozen || isDead) {
+            animator.SetBool("isMoving", false);
+        } else {
+            animator.SetBool("isMoving", true);
         }
     }
 
@@ -42,6 +57,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void takeDamageFreeze(int damage, Vector2 moveVector, float freezeTime) {
+        health -= damage;
+        if (health <= 0) {
+            player.Score();
+            this.moveVector = moveVector;
+            StartCoroutine(DeathAnim());
+        } else {
+            StartCoroutine(Frozen(freezeTime));
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision) {
         if (isDead) {
             if (collision.gameObject.tag == "YWall") {
@@ -50,6 +76,13 @@ public class Enemy : MonoBehaviour
                 moveVector *= new Vector2(-1, -1);
             }
         }
+    }
+
+    IEnumerator Frozen(float freezeTime) {
+        frozen = true;
+        yield return new WaitForSeconds(freezeTime);
+        frozen = false;
+        yield return null;
     }
 
     IEnumerator DeathAnim() {
@@ -65,6 +98,7 @@ public class Enemy : MonoBehaviour
         spriteRenderer.enabled = false;
         particle.Play();
         yield return new WaitForSeconds(0.5f);
+        GameManager.Instance.enemyList.Remove(this);
         Destroy(gameObject);
         yield return null;
     }

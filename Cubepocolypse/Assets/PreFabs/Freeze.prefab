@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &3835920586872609980
 ParticleSystem:
@@ -4895,6 +4895,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9bd2aae1077359459c1027fe5f557bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 2
+  time: 1
+  size: 4
+  freezeTime: 2
+  particle: {fileID: 3835920586872609980}
 --- !u!58 &-6018815172971481917
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4910,4 +4915,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.0001

@@ -893,6 +893,11 @@ MonoBehaviour:
   enemySpawnCooldown: 2
   minEnemySpawnCooldown: 0.5
   enemyList: []
+  walls:
+  - {fileID: 1657504764}
+  - {fileID: 1566657294}
+  - {fileID: 2016389618}
+  - {fileID: 1469142224}
 --- !u!4 &1025555629
 Transform:
   m_ObjectHideFlags: 0
@@ -1349,8 +1354,8 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1519350702}
   animator: {fileID: 1519350707}
   freezePrefab: {fileID: 8437949178963434348, guid: dab8e1ee61079754f859d224a3c6b139, type: 3}
-  numMissiles: 2
-  missileTime: 0.5
+  numMissiles: 5
+  missileTime: 0.2
   missilePrefab: {fileID: 3064483304562266149, guid: bf10763f84ad4f049827216381cf2487, type: 3}
 --- !u!50 &1519350701
 Rigidbody2D:
@@ -1433,7 +1438,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1519350699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 95}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1453,9 +1458,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.05}
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.3
 --- !u!114 &1519350705
 MonoBehaviour:
   m_ObjectHideFlags: 0

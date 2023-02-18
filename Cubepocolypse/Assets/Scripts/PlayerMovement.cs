@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         if (player.lives <= 7) {
             Instantiate(freezePrefab, rb.position, Quaternion.identity);
         }
-        if (player.lives >= 9) {
+        if (player.lives <= 6) {
             StartCoroutine(SpawnMissiles());
         }
         yield return new WaitForSeconds(dashDistance / 2);

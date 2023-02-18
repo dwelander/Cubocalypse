@@ -12,11 +12,19 @@ public class GameManager : MonoBehaviour
     public float enemySpawnCooldown = 5f;
     public float minEnemySpawnCooldown = 0.5f;
     public List<Enemy> enemyList = new List<Enemy>();
+    public GameObject[] walls;
 
     private bool canSpawn = true;
 
     private void Awake() {
         Instance = this;
+    }
+
+    private void Start() {
+        walls[0].transform.position = cam.ViewportToWorldPoint(new Vector3(0.5f, 1, 0));
+        walls[1].transform.position = cam.ViewportToWorldPoint(new Vector3(0.5f, 0, 0));
+        walls[2].transform.position = cam.ViewportToWorldPoint(new Vector3(0, 0.5f, 0));
+        walls[3].transform.position = cam.ViewportToWorldPoint(new Vector3(1, 0.5f, 0));
     }
 
     private void Update() {

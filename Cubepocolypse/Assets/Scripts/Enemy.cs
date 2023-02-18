@@ -12,7 +12,9 @@ public class Enemy : MonoBehaviour
     public float knockback = 10f;
     public float deathAnimTime = 2f;
     public Collider2D col;
+    public bool onScreen;
 
+    private Camera cam;
     private SpriteRenderer spriteRenderer;
     private bool isDead;
     private Vector2 moveVector;
@@ -25,6 +27,8 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         particle = GetComponent<ParticleSystem>();
         animator = GetComponent<Animator>();
+        cam = FindObjectOfType<Camera>();
+        onScreen = false;
     }
 
     private void FixedUpdate() {
@@ -46,12 +50,16 @@ public class Enemy : MonoBehaviour
         } else {
             animator.SetBool("isMoving", true);
         }
+
+        Vector2 viewPos = cam.WorldToViewportPoint(transform.position);
+        if (viewPos.x > 0 && viewPos.x < 1 && viewPos.y > 0 && viewPos.y < 1) {
+            onScreen = true;
+        }
     }
 
     public void takeDamage(int damage, Vector2 moveVector) {
         health -= damage;
         if (health <= 0) {
-            player.Score();
             this.moveVector = moveVector;
             StartCoroutine(DeathAnim());
         }
@@ -59,8 +67,7 @@ public class Enemy : MonoBehaviour
 
     public void takeDamageFreeze(int damage, Vector2 moveVector, float freezeTime) {
         health -= damage;
-        if (health <= 0) {
-            player.Score();
+        if (health <= 0) { 
             this.moveVector = moveVector;
             StartCoroutine(DeathAnim());
         } else {
@@ -99,6 +106,7 @@ public class Enemy : MonoBehaviour
         particle.Play();
         yield return new WaitForSeconds(0.5f);
         GameManager.Instance.enemyList.Remove(this);
+        player.Score();
         Destroy(gameObject);
         yield return null;
     }
